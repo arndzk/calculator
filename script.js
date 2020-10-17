@@ -10,9 +10,13 @@ function generateCalculator() {
     const calcButtons = document.createElement('div');
     calcButtons.classList.add('calc-buttons');
 
-    const display = document.createElement('textarea');
+    const display = document.createElement('div');
     display.classList.add('display');
     display.readOnly = true;
+    const displayNumbers = document.createElement('div');
+    displayNumbers.classList.add('display-numbers');
+    displayNumbers.innerHTML = `0`;
+    display.appendChild(displayNumbers);
     calcDisplay.appendChild(display);
 
     calculator.appendChild(calcDisplay);

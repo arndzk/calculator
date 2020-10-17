@@ -24,8 +24,16 @@ html, body {
 
 .display {
     flex-grow: 4;
-    resize: none;
+    position: relative;
     background-color: white;
+    text-align: right;
+    font-size:  64px;
+}
+
+.display-numbers {
+    position: absolute;
+    bottom: 0;
+    right: 8px;
 }
 
 .calc-buttons {
