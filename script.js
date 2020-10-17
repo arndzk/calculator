@@ -138,10 +138,25 @@ function clearDisplay() {
 // Calculator Logic
 
 function equate(expression) {
+    console.table(expression);
     let arrayExpression = [];
+    let someNumber = ``;
     for (let i = 0; i < expression.length; i++) {
-        arrayExpression[i] = expression[i];
+        let j = 0;
+        if(expression.charCodeAt(i) >= 48 && expression.charCodeAt(i) <= 57) {
+            console.log(`+++ NUMBER ${expression[i]} +++`);
+            someNumber = someNumber.concat(expression[i]);
+            console.log(`${someNumber}`);
+        }
+        else if(expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/') {
+            console.log(`+++ OPERATOR ${expression[i]}+++`);
+            arrayExpression[j++] = someNumber;
+            arrayExpression[j++] = expression[i];
+            someNumber = ``;
+        }
     }
+    arrayExpression.splice(arrayExpression.length + 1, 0, someNumber);
+    console.table(arrayExpression);
     for (let i = 0; i < arrayExpression.length; i++) {
         if(arrayExpression[i] == '*') {
             let result = operate(Number(arrayExpression[i - 1]), Number(arrayExpression[i + 1]), arrayExpression[i]);
@@ -152,11 +167,13 @@ function equate(expression) {
             newExpression.splice(i - 1, 0, result);
             arrayExpression = newExpression;
             i--;
+            console.table(arrayExpression);
         }
     }
 }
 
 function operate(operandOne, operandTwo, operator) {
+    console.log(`+++ PERFORMING OPERATION +++`);
     if (operator == '*') {
         let result = multiply(operandOne, operandTwo);
         return result;
