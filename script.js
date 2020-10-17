@@ -142,7 +142,7 @@ function equate(expression) {
     for (let i = 0; i < expression.length; i++) {
         arrayExpression[i] = expression[i];
     }
-    for (let i = 0; i < arrayExpression.length; i ++) {
+    for (let i = 0; i < arrayExpression.length; i++) {
         if(arrayExpression[i] == '*') {
             let result = operate(Number(arrayExpression[i - 1]), Number(arrayExpression[i + 1]), arrayExpression[i]);
             const newExpression = [
@@ -152,9 +152,6 @@ function equate(expression) {
             newExpression.splice(i - 1, 0, result);
             arrayExpression = newExpression;
             i--;
-            console.log(result);
-            console.table(newExpression);
-            console.table(arrayExpression);
         }
     }
 }
@@ -162,6 +159,18 @@ function equate(expression) {
 function operate(operandOne, operandTwo, operator) {
     if (operator == '*') {
         let result = multiply(operandOne, operandTwo);
+        return result;
+    }
+    else if (operator == '/') {
+        let result = divide(operandOne, operandTwo);
+        return result;
+    }
+    else if (operator == '+') {
+        let result = add(operandOne, operandTwo);
+        return result;
+    }
+    else if (operator == '-') {
+        let result = subtract(operandOne, operandTwo);
         return result;
     }
 }
