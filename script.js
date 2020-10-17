@@ -62,7 +62,9 @@ function generateCalculator() {
     buttonMultiply.addEventListener('click', updateDisplay, false);
     buttonSubtract.addEventListener('click', updateDisplay, false);
     buttonAdd.addEventListener('click', updateDisplay, false);
-    //[!]buttonEquals
+    buttonEquals.addEventListener('click', function() {
+        equate(document.querySelector('.display-numbers').innerHTML);
+    }, false);
 
     // appendChild
     display.appendChild(displayNumbers);
@@ -87,13 +89,13 @@ function generateCalculator() {
         buttonsNumbers.appendChild(numberRow);
     }
 
-    numberRow.appendChild(buttonClear);
-    numberRow.appendChild(buttonEquals);
+    numberRow.appendChild(buttonDivide);
+    numberRow.appendChild(buttonMultiply);
     buttonsNumbers.appendChild(numberRow);
-    buttonsOperators.appendChild(buttonDivide);
-    buttonsOperators.appendChild(buttonMultiply);
+    buttonsOperators.appendChild(buttonClear);
     buttonsOperators.appendChild(buttonSubtract);
     buttonsOperators.appendChild(buttonAdd);
+    buttonsOperators.appendChild(buttonEquals);
     calcButtons.appendChild(buttonsNumbers);
     calcButtons.appendChild(buttonsOperators);
     calculator.appendChild(calcButtons);
@@ -106,7 +108,6 @@ function updateDisplay() {
     let displayNumbers = document.querySelector('.display-numbers');
     let newDisplayContent = displayNumbers.innerHTML;
     if (newDisplayContent == ``) {
-        console.log(`${newContent == '+'}`);
         if (newContent != '+' && newContent != '-' && newContent != '*' && newContent != '/') {
             newDisplayContent = newDisplayContent.concat(newContent);
             displayNumbers.innerHTML = newDisplayContent;
@@ -136,24 +137,49 @@ function clearDisplay() {
 
 // Calculator Logic
 
-const operate = function(operandOne, operandTwo, operator) {
+function equate(expression) {
+    let arrayExpression = [];
+    for (let i = 0; i < expression.length; i++) {
+        arrayExpression[i] = expression[i];
+    }
+    for (let i = 0; i < arrayExpression.length; i ++) {
+        if(arrayExpression[i] == '*') {
+            let result = operate(Number(arrayExpression[i - 1]), Number(arrayExpression[i + 1]), arrayExpression[i]);
+            const newExpression = [
+                ...arrayExpression.slice(0, i - 1),
+                ...arrayExpression.slice(i + 2)
+            ];
+            newExpression.splice(i - 1, 0, result);
+            arrayExpression = newExpression;
+            i--;
+            console.log(result);
+            console.table(newExpression);
+            console.table(arrayExpression);
+        }
+    }
+}
 
+function operate(operandOne, operandTwo, operator) {
+    if (operator == '*') {
+        let result = multiply(operandOne, operandTwo);
+        return result;
+    }
 }
 
 // Mathematical Operations
 
-const add = function(x, y) {
+function add(x, y) {
     return x + y;
 }
 
-const subtract = function(x, y) {
+function subtract(x, y) {
     return x - y;
 }
 
-const multiply = function(x, y) {
+function multiply(x, y) {
     return x * y;
 }
 
-const divide = function(x, y) {
+function divide(x, y) {
     return x / y;
 }
