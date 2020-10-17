@@ -1,4 +1,4 @@
-const displayContents = ``
+const displayContent = ``
 
 generateCalculator();
 
@@ -17,7 +17,7 @@ function generateCalculator() {
     display.readOnly = true;
     const displayNumbers = document.createElement('div');
     displayNumbers.classList.add('display-numbers');
-    displayNumbers.innerHTML = displayContents;
+    displayNumbers.innerHTML = displayContent;
     display.appendChild(displayNumbers);
     calcDisplay.appendChild(display);
 
@@ -105,16 +105,40 @@ function generateCalculator() {
 
 function updateDisplay() {
     let newContent = this.innerHTML;
+    console.log(`${newContent}`);
     let displayNumbers = document.querySelector('.display-numbers');
     let newDisplayContent = displayNumbers.innerHTML;
-    console.log(`${typeof(newDisplayContent)}`)
-    newDisplayContent = newDisplayContent.concat(newContent);
-    displayNumbers.innerHTML = newDisplayContent;
+    console.log(`last char before click ${newDisplayContent.slice(newDisplayContent.length - 1)}`);
+    console.log(`length before click ${newDisplayContent.length}`);
+    if (newDisplayContent == ``) {
+        console.log(`${newContent == '+'}`);
+        if (newContent != '+' && newContent != '-' && newContent != '*' && newContent != '/') {
+            newDisplayContent = newDisplayContent.concat(newContent);
+            displayNumbers.innerHTML = newDisplayContent;
+        }
+    }
+    else if (newDisplayContent != ``) {
+        if (newDisplayContent.slice(newDisplayContent.length - 1) == '+' ||
+             newDisplayContent.slice(newDisplayContent.length - 1) == '-' ||
+             newDisplayContent.slice(newDisplayContent.length - 1) == '*' ||
+             newDisplayContent.slice(newDisplayContent.length - 1) == '/') {
+                if (newContent != '+' && newContent != '-' && newContent != '*' && newContent != '/') {
+                    newDisplayContent = newDisplayContent.concat(newContent);
+                    displayNumbers.innerHTML = newDisplayContent;
+                }
+        } else {
+            newDisplayContent = newDisplayContent.concat(newContent);
+            displayNumbers.innerHTML = newDisplayContent;
+        }
+    }
+    console.log(`last char after click ${newDisplayContent.slice(newDisplayContent.length - 1)}`);
+    console.log(`length after click ${newDisplayContent.length}`);
 }
 
 function clearDisplay() {
     let displayNumbers = document.querySelector('.display-numbers');
     displayNumbers.innerHTML = ``;
+    console.log(`+++ DISPLAY CLEAR +++`)
 }
 
 // Calculator Logic
