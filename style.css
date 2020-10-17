@@ -20,6 +20,7 @@ html, body {
     flex-direction: row;
     flex-grow: 1;
     border: 1px dotted red;
+    overflow: hidden;
 }
 
 .display {
@@ -28,12 +29,15 @@ html, body {
     background-color: white;
     text-align: right;
     font-size:  64px;
+    display: inline-block;
 }
 
 .display-numbers {
     position: absolute;
     bottom: 0;
     right: 8px;
+    display: inline-block;
+    white-space: nowrap;
 }
 
 .calc-buttons {
