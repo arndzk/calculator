@@ -49,13 +49,13 @@ function generateCalculator() {
     }
     const numberRow = document.createElement('div');
     numberRow.classList.add('number-row');
-    const buttonBackspace = document.createElement('button');
+    const buttonClear = document.createElement('button');
     const buttonEquals = document.createElement('button');
-    buttonBackspace.classList.add('button-backspace');
+    buttonClear.classList.add('button-clear');
     buttonEquals.classList.add('button-equals');
-    buttonBackspace.innerHTML = `Backspace`;
+    buttonClear.innerHTML = `Clear`;
     buttonEquals.innerHTML = `=`;
-    numberRow.appendChild(buttonBackspace);
+    numberRow.appendChild(buttonClear);
     numberRow.appendChild(buttonEquals);
     buttonsNumbers.appendChild(numberRow);
 
