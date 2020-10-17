@@ -18,12 +18,14 @@ html, body {
 .calc-display {
     display: flex;
     flex-direction: row;
-    order: 0;
+    flex-grow: 1;
     border: 1px dotted red;
 }
 
 .display {
     flex-grow: 4;
+    resize: none;
+    background-color: white;
 }
 
 .calc-buttons {
@@ -51,6 +53,10 @@ html, body {
     flex-grow: 1;
 }
 
+.button-zero {
+    flex-grow: 3;
+}
+
 .button-backspace {
     flex-grow: 1;
 }
@@ -64,4 +70,8 @@ html, body {
     flex-grow: 1;
     flex-direction: column;
     border: 1px dotted red;
+}
+
+.button-operator {
+    flex-grow: 1;
 }

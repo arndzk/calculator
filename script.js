@@ -11,7 +11,8 @@ function generateCalculator() {
     calcButtons.classList.add('calc-buttons');
 
     const display = document.createElement('textarea');
-    display.classList.add('display')
+    display.classList.add('display');
+    display.readOnly = true;
     calcDisplay.appendChild(display);
 
     calculator.appendChild(calcDisplay);
@@ -19,6 +20,20 @@ function generateCalculator() {
     const buttonsNumbers = document.createElement('div');
     const buttonsOperators = document.createElement('div');
     buttonsNumbers.classList.add('buttons-numbers');
+    buttonsOperators.classList.add('buttons-operators');
+
+    const numberRowBottom = document.createElement('div');
+    numberRowBottom.classList.add('number-row');
+    const buttonZero = document.createElement('button');
+    const buttonDecimal = document.createElement('button');
+    buttonZero.classList.add('button-number', 'button-zero');
+    buttonDecimal.classList.add('button-number');
+    buttonZero.innerHTML = `0`;
+    buttonDecimal.innerHTML = `.`;
+    numberRowBottom.appendChild(buttonZero);
+    numberRowBottom.appendChild(buttonDecimal);
+    buttonsNumbers.appendChild(numberRowBottom);
+
     // Generate Number Buttons
     let counter = 1;
     for(let i = 1; i <= 3 ; i++) {
@@ -44,9 +59,27 @@ function generateCalculator() {
     numberRow.appendChild(buttonEquals);
     buttonsNumbers.appendChild(numberRow);
 
+    // Operator Buttons
+    const buttonDivide = document.createElement('button');
+    const buttonMultiply = document.createElement('button');
+    const buttonSubtract = document.createElement('button');
+    const buttonAdd = document.createElement('button');
 
+    buttonDivide.classList.add('button-operator');
+    buttonMultiply.classList.add('button-operator');
+    buttonSubtract.classList.add('button-operator');
+    buttonAdd.classList.add('button-operator');
 
-    buttonsOperators.classList.add('buttons-operators');
+    buttonDivide.innerHTML = `/`;
+    buttonMultiply.innerHTML = `*`;
+    buttonSubtract.innerHTML = `-`;
+    buttonAdd.innerHTML = `+`;
+
+    buttonsOperators.appendChild(buttonDivide);
+    buttonsOperators.appendChild(buttonMultiply);
+    buttonsOperators.appendChild(buttonSubtract);
+    buttonsOperators.appendChild(buttonAdd);
+
     calcButtons.appendChild(buttonsNumbers);
     calcButtons.appendChild(buttonsOperators);
 
