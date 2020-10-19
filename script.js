@@ -112,9 +112,12 @@ function generateCalculator() {
 function updateDisplay() {
     let newContent = this.innerHTML;
     let displayNumbers = document.querySelector('.display-numbers');
+    if(displayNumbers.innerHTML == 'undefined') {
+        clearDisplay();
+    }
     let newDisplayContent = displayNumbers.innerHTML;
     if (newDisplayContent == ``) {
-        if (newContent != '+' && newContent != '-' && newContent != '*' && newContent != '/') {
+        if (newContent != '+' && newContent != '-' && newContent != '*' && newContent != '/' && newContent != '.') {
             newDisplayContent = newDisplayContent.concat(newContent);
             displayNumbers.innerHTML = newDisplayContent;
         }
@@ -123,14 +126,50 @@ function updateDisplay() {
         if (newDisplayContent.slice(newDisplayContent.length - 1) == '+' ||
              newDisplayContent.slice(newDisplayContent.length - 1) == '-' ||
              newDisplayContent.slice(newDisplayContent.length - 1) == '*' ||
-             newDisplayContent.slice(newDisplayContent.length - 1) == '/') {
-                if (newContent != '+' && newContent != '-' && newContent != '*' && newContent != '/') {
+             newDisplayContent.slice(newDisplayContent.length - 1) == '/' ||
+             newDisplayContent.slice(newDisplayContent.length - 1) == '.') {
+                if (newContent != '+' && newContent != '-' && newContent != '*' && newContent != '/' && newContent != '.') {
                     newDisplayContent = newDisplayContent.concat(newContent);
                     displayNumbers.innerHTML = newDisplayContent;
                 }
         } else {
-            newDisplayContent = newDisplayContent.concat(newContent);
-            displayNumbers.innerHTML = newDisplayContent;
+            if(newContent == '.') {
+                console.log(`Trying to insert decimal point...`);
+                let i, j;
+                let decimalPoint = false;
+                console.log(`${newDisplayContent[newDisplayContent.length - 1]}`);
+                console.log(`Check for last operator.`);
+                for(i = newDisplayContent.length - 1; i >= 0 ; i--) {
+                    console.log(`Checking for last operator...`);
+                    if(newDisplayContent[i] == '+' || 
+                    newDisplayContent[i] == '-' ||
+                    newDisplayContent[i] == '*' ||
+                    newDisplayContent[i] == '/') {
+                        console.log(newDisplayContent[i]);
+                        break;
+                    } else {
+                        continue;
+                    }
+                }
+                console.log(`i = ${i}`);
+                for (j = newDisplayContent.length - 1; j >= i; j--) {
+                    console.log(`Checking for any decimal point... ${newDisplayContent[j]}`);
+                    if (newDisplayContent[j] == '.') {
+                        alert(`You can't have more than one decimal point per number!`);
+                        decimalPoint = true;
+                        break;
+                    } else {
+                        continue;
+                    }
+                }
+                if (decimalPoint == false) {
+                    newDisplayContent = newDisplayContent.concat(newContent);
+                    displayNumbers.innerHTML = newDisplayContent;
+                }
+            } else {
+                newDisplayContent = newDisplayContent.concat(newContent);
+                displayNumbers.innerHTML = newDisplayContent;
+            }
         }
     }
 }
@@ -138,48 +177,41 @@ function updateDisplay() {
 function clearDisplay() {
     let displayNumbers = document.querySelector('.display-numbers');
     displayNumbers.innerHTML = ``;
-    console.log(`+++ DISPLAY CLEAR +++`)
 }
 
 function backspace() {
     let displayNumbers = document.querySelector('.display-numbers');
+    if(displayNumbers.innerHTML == 'undefined') {
+        clearDisplay();
+    }
     let newDisplayNumbers = displayNumbers.innerHTML;
-    console.log(newDisplayNumbers);
     newDisplayNumbers = newDisplayNumbers.slice(0, -1);
-    console.log(newDisplayNumbers);
     displayNumbers.innerHTML = newDisplayNumbers;
 }
 
 // Calculator Logic
 
 function equate(expression) {
-    console.table(expression);
     let arrayExpression = [];
     let someNumber = ``;
-    console.log(`${expression[expression.length-1]}`)
+    let result;
     if (expression[expression.length - 1] == '+' || expression[expression.length - 1] == '-' || expression[expression.length - 1] == '*' || expression[expression.length - 1] == '/') {
         expression = expression.slice(0, -1);
-        console.log(expression);
     }
     for (let i = 0; i < expression.length; i++) {
-        let j = 0;
-        if(expression.charCodeAt(i) >= 48 && expression.charCodeAt(i) <= 57) {
-            console.log(`+++ NUMBER ${expression[i]} +++`);
+        if((expression.charCodeAt(i) >= 48 && expression.charCodeAt(i) <= 57) || expression.charCodeAt(i) == 46) {
             someNumber = someNumber.concat(expression[i]);
-            console.log(`${someNumber}`);
         }
         else if(expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/') {
-            console.log(`+++ OPERATOR ${expression[i]}+++`);
-            arrayExpression[j++] = someNumber;
-            arrayExpression[j++] = expression[i];
+            arrayExpression.push(someNumber);
+            arrayExpression.push(expression[i]);
             someNumber = ``;
         }
     }
     arrayExpression.splice(arrayExpression.length + 1, 0, someNumber);
-    console.table(arrayExpression);
     for (let i = 0; i < arrayExpression.length; i++) {
         if(arrayExpression[i] == '*') {
-            let result = operate(Number(arrayExpression[i - 1]), Number(arrayExpression[i + 1]), arrayExpression[i]);
+            result = operate(Number(arrayExpression[i - 1]), Number(arrayExpression[i + 1]), arrayExpression[i]);
             const newExpression = [
                 ...arrayExpression.slice(0, i - 1),
                 ...arrayExpression.slice(i + 2)
@@ -187,13 +219,53 @@ function equate(expression) {
             newExpression.splice(i - 1, 0, result);
             arrayExpression = newExpression;
             i--;
-            console.table(arrayExpression);
         }
     }
+    for (let i = 0; i < arrayExpression.length; i++) {
+        if(arrayExpression[i] == '/') {
+            result = operate(Number(arrayExpression[i - 1]), Number(arrayExpression[i + 1]), arrayExpression[i]);
+            if (result == undefined) {
+                arrayExpression.splice(0, arrayExpression.length);
+                arrayExpression.push(undefined);
+            }
+            const newExpression = [
+                ...arrayExpression.slice(0, i - 1),
+                ...arrayExpression.slice(i + 2)
+            ];
+            newExpression.splice(i - 1, 0, result);
+            arrayExpression = newExpression;
+            i--;
+        }
+    }
+    for (let i = 0; i < arrayExpression.length; i++) {
+        if(arrayExpression[i] == '+') {
+            result = operate(Number(arrayExpression[i - 1]), Number(arrayExpression[i + 1]), arrayExpression[i]);
+            const newExpression = [
+                ...arrayExpression.slice(0, i - 1),
+                ...arrayExpression.slice(i + 2)
+            ];
+            newExpression.splice(i - 1, 0, result);
+            arrayExpression = newExpression;
+            i--;
+        }
+    }
+    for (let i = 0; i < arrayExpression.length; i++) {
+        if(arrayExpression[i] == '-') {
+            result = operate(Number(arrayExpression[i - 1]), Number(arrayExpression[i + 1]), arrayExpression[i]);
+            const newExpression = [
+                ...arrayExpression.slice(0, i - 1),
+                ...arrayExpression.slice(i + 2)
+            ];
+            newExpression.splice(i - 1, 0, result);
+            arrayExpression = newExpression;
+            i--;
+        }
+    }
+    const displayNumbers = document.querySelector('.display-numbers');
+    displayNumbers.innerHTML = Math.round((result + Number.EPSILON) * 100) / 100;
 }
 
 function operate(operandOne, operandTwo, operator) {
-    console.log(`+++ PERFORMING OPERATION +++`);
     if (operator == '*') {
         let result = multiply(operandOne, operandTwo);
         return result;
@@ -227,5 +299,9 @@ function multiply(x, y) {
 }
 
 function divide(x, y) {
-    return x / y;
+    if(y == 0) {
+        return undefined;
+    } else {
+        return x / y;
+    }
 }
