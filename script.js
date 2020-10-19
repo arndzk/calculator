@@ -134,26 +134,19 @@ function updateDisplay() {
                 }
         } else {
             if(newContent == '.') {
-                console.log(`Trying to insert decimal point...`);
                 let i, j;
                 let decimalPoint = false;
-                console.log(`${newDisplayContent[newDisplayContent.length - 1]}`);
-                console.log(`Check for last operator.`);
                 for(i = newDisplayContent.length - 1; i >= 0 ; i--) {
-                    console.log(`Checking for last operator...`);
                     if(newDisplayContent[i] == '+' || 
                     newDisplayContent[i] == '-' ||
                     newDisplayContent[i] == '*' ||
                     newDisplayContent[i] == '/') {
-                        console.log(newDisplayContent[i]);
                         break;
                     } else {
                         continue;
                     }
                 }
-                console.log(`i = ${i}`);
                 for (j = newDisplayContent.length - 1; j >= i; j--) {
-                    console.log(`Checking for any decimal point... ${newDisplayContent[j]}`);
                     if (newDisplayContent[j] == '.') {
                         alert(`You can't have more than one decimal point per number!`);
                         decimalPoint = true;
