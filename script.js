@@ -19,6 +19,7 @@ function generateCalculator() {
     const buttonDecimal = document.createElement('button');
     const numberRow = document.createElement('div');
     const buttonClear = document.createElement('button');
+    const buttonBackspace = document.createElement('button');
     const buttonEquals = document.createElement('button');
     const buttonDivide = document.createElement('button');
     const buttonMultiply = document.createElement('button');
@@ -37,6 +38,7 @@ function generateCalculator() {
     buttonDecimal.classList.add('button-number');
     numberRow.classList.add('number-row');
     buttonClear.classList.add('button-clear');
+    buttonBackspace.classList.add('button-backspace');
     buttonEquals.classList.add('button-equals');
     buttonDivide.classList.add('button-operator');
     buttonMultiply.classList.add('button-operator');
@@ -48,6 +50,7 @@ function generateCalculator() {
     buttonZero.innerHTML = `0`;
     buttonDecimal.innerHTML = `.`;
     buttonClear.innerHTML = `Clear`;
+    buttonBackspace.innerHTML = `Backspace`;
     buttonEquals.innerHTML = `=`;
     buttonDivide.innerHTML = `/`;
     buttonMultiply.innerHTML = `*`;
@@ -58,6 +61,7 @@ function generateCalculator() {
     buttonZero.addEventListener('click', updateDisplay, false);
     buttonDecimal.addEventListener('click', updateDisplay, false);
     buttonClear.addEventListener('click', clearDisplay, false);
+    buttonBackspace.addEventListener('click', backspace, false);
     buttonDivide.addEventListener('click', updateDisplay, false);
     buttonMultiply.addEventListener('click', updateDisplay, false);
     buttonSubtract.addEventListener('click', updateDisplay, false);
@@ -89,10 +93,12 @@ function generateCalculator() {
         buttonsNumbers.appendChild(numberRow);
     }
 
-    numberRow.appendChild(buttonDivide);
+    numberRow.appendChild(buttonClear);
+    numberRow.appendChild(buttonBackspace);
     numberRow.appendChild(buttonMultiply);
     buttonsNumbers.appendChild(numberRow);
-    buttonsOperators.appendChild(buttonClear);
+    buttonsOperators.appendChild(buttonDivide);
+    buttonsOperators.appendChild(buttonMultiply);
     buttonsOperators.appendChild(buttonSubtract);
     buttonsOperators.appendChild(buttonAdd);
     buttonsOperators.appendChild(buttonEquals);
@@ -135,12 +141,26 @@ function clearDisplay() {
     console.log(`+++ DISPLAY CLEAR +++`)
 }
 
+function backspace() {
+    let displayNumbers = document.querySelector('.display-numbers');
+    let newDisplayNumbers = displayNumbers.innerHTML;
+    console.log(newDisplayNumbers);
+    newDisplayNumbers = newDisplayNumbers.slice(0, -1);
+    console.log(newDisplayNumbers);
+    displayNumbers.innerHTML = newDisplayNumbers;
+}
+
 // Calculator Logic
 
 function equate(expression) {
     console.table(expression);
     let arrayExpression = [];
     let someNumber = ``;
+    console.log(`${expression[expression.length-1]}`)
+    if (expression[expression.length - 1] == '+' || expression[expression.length - 1] == '-' || expression[expression.length - 1] == '*' || expression[expression.length - 1] == '/') {
+        expression = expression.slice(0, -1);
+        console.log(expression);
+    }
     for (let i = 0; i < expression.length; i++) {
         let j = 0;
         if(expression.charCodeAt(i) >= 48 && expression.charCodeAt(i) <= 57) {

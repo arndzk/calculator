@@ -73,6 +73,10 @@ html, body {
     flex-grow: 1;
 }
 
+.button-backspace {
+    flex-grow: 1;
+}
+
 .button-equals {
     flex-grow: 1;
 }
